@@ -9,10 +9,18 @@ const STEPS = [
   ["Ozvi sa priamo", "Nájdeš ich cez známych a známych známych. Píšeš alebo voláš rovno im."],
 ];
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ zmazane?: string }>;
+}) {
   const user = await getCurrentUser();
+  const { zmazane } = await searchParams;
   return (
     <div className="space-y-14 py-2 sm:py-8">
+      {zmazane && (
+        <p className="rounded-ui bg-tint px-3 py-2 text-sm text-brand">Tvoj účet bol zmazaný.</p>
+      )}
       <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
         <div className="space-y-5">
           <h1 className="text-[32px] font-bold leading-[1.1] tracking-tight text-balance sm:text-[46px]">

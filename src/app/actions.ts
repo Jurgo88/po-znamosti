@@ -67,6 +67,24 @@ export async function saveProfile(_prev: FormState, form: FormData): Promise<For
   return { ok: true };
 }
 
+/** Zmaže účet aj všetko naviazané (FK s ON DELETE CASCADE). */
+export async function deleteAccount(_prev: FormState, form: FormData): Promise<FormState> {
+  const user = await requireUser("/profil");
+  if (String(form.get("confirm") ?? "").trim().toUpperCase() !== "ZMAZAŤ")
+    return { error: "Pre potvrdenie napíš ZMAZAŤ." };
+  const db = getDb();
+  await db.batch([
+    // Prijaté pozvánky po zmazaní stratia accepted_by (SET NULL); nech sa nedajú použiť znova.
+    db
+      .update(schema.invite)
+      .set({ expiresAt: new Date() })
+      .where(eq(schema.invite.acceptedBy, user.id)),
+    db.delete(schema.session).where(eq(schema.session.userId, user.id)),
+    db.delete(schema.user).where(eq(schema.user.id, user.id)),
+  ]);
+  redirect("/?zmazane=1");
+}
+
 export async function signOut() {
   await getAuth().api.signOut({ headers: await headers() });
   redirect("/");

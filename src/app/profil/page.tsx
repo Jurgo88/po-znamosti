@@ -2,6 +2,7 @@ import { signOut } from "@/app/actions";
 import { requireUser } from "@/lib/session";
 import { ProfileForm } from "./profile-form";
 import { ProfileServices } from "./services";
+import { DeleteAccount } from "./delete-account";
 
 export default async function ProfilePage({
   searchParams,
@@ -33,9 +34,12 @@ export default async function ProfilePage({
       />
       {!isNew && <ProfileServices userId={user.id} highlight={Boolean(sluzby)} />}
       {!isNew && (
-        <form action={signOut}>
-          <button className="text-sm text-muted hover:underline">Odhlásiť sa</button>
-        </form>
+        <div className="space-y-4 border-t border-hair pt-6">
+          <form action={signOut}>
+            <button className="text-sm text-muted hover:underline">Odhlásiť sa</button>
+          </form>
+          <DeleteAccount />
+        </div>
       )}
     </div>
   );

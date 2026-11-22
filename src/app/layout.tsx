@@ -55,9 +55,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             )}
           </nav>
         </header>
-        <main className={`mx-auto max-w-5xl px-4 py-8 sm:px-6 ${user ? "pb-28 sm:pb-12" : ""}`}>
+        <main className={`mx-auto max-w-5xl px-4 py-8 sm:px-6 ${user ? "pb-8 sm:pb-12" : ""}`}>
           {children}
         </main>
+        <footer
+          className={`mx-auto flex max-w-5xl gap-4 px-4 pb-8 text-xs text-muted sm:px-6 ${user ? "mb-20 sm:mb-0" : ""}`}
+        >
+          <Link href="/sukromie" className="hover:underline">
+            Ochrana súkromia
+          </Link>
+          <Link href="/podmienky" className="hover:underline">
+            Podmienky používania
+          </Link>
+        </footer>
         {user && <MobileTabBar />}
       </body>
     </html>

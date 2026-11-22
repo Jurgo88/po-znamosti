@@ -58,8 +58,8 @@ export default async function PersonPage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <Link href="/hladat" className="text-sm font-medium text-brand">
-        ← Späť na hľadanie
+      <Link href={friend ? "/siet" : "/hladat"} className="text-sm font-medium text-brand">
+        {friend ? "← Späť do siete" : "← Späť na hľadanie"}
       </Link>
       <div className="space-y-4">
         <div className="flex items-center gap-4">

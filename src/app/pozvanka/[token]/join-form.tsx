@@ -40,6 +40,17 @@ export function JoinForm({
         error && ERRORS[error] && <p className="text-sm text-red-700">{ERRORS[error]}</p>
       )}
       <button className="btn w-full">Pridať sa</button>
+      <p className="text-center text-xs text-muted">
+        Pokračovaním súhlasíš s{" "}
+        <Link href="/podmienky" className="underline">
+          podmienkami
+        </Link>{" "}
+        a berieš na vedomie{" "}
+        <Link href="/sukromie" className="underline">
+          ochranu súkromia
+        </Link>
+        .
+      </p>
       <p className="text-center text-sm text-stone-600">
         Už máš účet?{" "}
         <Link href={loginHref} className="underline">
