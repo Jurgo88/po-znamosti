@@ -48,7 +48,7 @@ Databáza D1 `po-znamosti` už existuje (región západná Európa), migrácie s
 
 **Ručne z počítača:** `npx wrangler login`, nastav tajomstvá cez `npx wrangler secret put BETTER_AUTH_SECRET` a `npx wrangler secret put RESEND_API_KEY`, potom `npm run deploy`.
 
-**Nové migrácie** spúšťaj pred nasadením: `npm run db:migrate:remote`.
+**Nové migrácie** spúšťaj pred nasadením: `npm run db:migrate:remote`. Náhľady z PR používajú samostatnú databázu `po-znamosti-preview` (blok `previews` vo `wrangler.jsonc`); nové migrácie na ňu spustíš cez `npx wrangler d1 migrations apply po-znamosti-preview --remote`.
 
 **E-maily:** kým nemáš v Resend overenú vlastnú doménu, odosielateľ je `onboarding@resend.dev` a Resend doručí e-maily iba na adresu tvojho Resend účtu. Na testovanie s kamošmi treba doménu overiť a zmeniť `EMAIL_FROM`.
 
