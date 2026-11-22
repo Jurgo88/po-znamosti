@@ -9,7 +9,12 @@ import { sendEmail } from "@/lib/email";
  * Better Auth inštancia. D1 binding existuje len počas požiadavky,
  * preto sa auth vytvára pri každej požiadavke (je to lacné).
  */
-export function getAuth() {
+type AuthOptions = {
+  /** Ak je zadané, prihlasovací odkaz sa neposiela e-mailom, ale odovzdá sa sem. */
+  captureMagicLink?: (url: string) => void;
+};
+
+export function getAuth(options: AuthOptions = {}) {
   const { env } = getCloudflareContext();
   return betterAuth({
     secret: env.BETTER_AUTH_SECRET,
@@ -32,6 +37,10 @@ export function getAuth() {
       magicLink({
         expiresIn: 60 * 15,
         sendMagicLink: async ({ email, url }) => {
+          if (options.captureMagicLink) {
+            options.captureMagicLink(url);
+            return;
+          }
           await sendEmail({
             to: email,
             subject: "Prihlásenie do Po známosti",

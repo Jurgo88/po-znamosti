@@ -45,7 +45,10 @@ export function LoginForm({ next }: { next: string }) {
         />
       </div>
       {state === "error" && (
-        <p className="text-sm text-red-700">Odkaz sa nepodarilo poslať. Skús to znova.</p>
+        <p className="text-sm text-red-700">
+          Odkaz sa nepodarilo poslať. Skontroluj e-mail a skús to znova. Ak ešte nemáš účet,
+          popros známeho o pozvánku a pridaj sa cez ňu.
+        </p>
       )}
       <button type="submit" className="btn w-full" disabled={state === "sending"}>
         {state === "sending" ? "Posielam…" : "Poslať odkaz"}
