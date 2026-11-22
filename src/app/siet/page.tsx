@@ -1,9 +1,9 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { and, desc, eq, gt, isNull } from "drizzle-orm";
 import { cancelInvite, removeConnection } from "@/app/actions";
 import { getDb, schema } from "@/db";
 import { listConnections } from "@/lib/connections";
 import { requireProfile } from "@/lib/session";
+import { getBaseUrl } from "@/lib/url";
 import { CopyLink } from "./copy-link";
 import { InviteForm } from "./invite-form";
 
@@ -15,8 +15,7 @@ export default async function NetworkPage({
   const user = await requireProfile("/siet");
   const { novy } = await searchParams;
   const db = getDb();
-  const { env } = getCloudflareContext();
-  const base = env.BETTER_AUTH_URL.replace(/\/$/, "");
+  const base = await getBaseUrl();
 
   const [friends, invites] = await Promise.all([
     listConnections(db, user.id),

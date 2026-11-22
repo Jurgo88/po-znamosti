@@ -33,26 +33,37 @@ Ukážka produkčného buildu priamo vo Workers runtime: `npm run preview`.
 
 Zoznam kategórií je v `src/data/categories.ts` a do databázy ho vkladá migrácia `0001_seed_categories.sql`. Nové kategórie pridávaj novou migráciou.
 
-## Prvé nasadenie na Cloudflare
+## Nasadenie na Cloudflare
 
-1. Prihlás sa: `npx wrangler login`
-2. Vytvor databázu: `npx wrangler d1 create po-znamosti` a vrátené `database_id` vlož do `wrangler.jsonc`.
-3. Spusti migrácie: `npm run db:migrate:remote`
-4. Nastav tajomstvá:
-   ```bash
-   npx wrangler secret put BETTER_AUTH_SECRET   # openssl rand -base64 32
-   npx wrangler secret put RESEND_API_KEY
-   ```
-5. V `wrangler.jsonc` skontroluj `BETTER_AUTH_URL` a `EMAIL_FROM` (doména musí byť overená v Resend).
-6. Nasaď: `npm run deploy`
-7. V Cloudflare dashboarde pripoj vlastnú doménu k workeru `po-znamosti` (Workers → po-znamosti → Settings → Domains & Routes).
+Databáza D1 `po-znamosti` už existuje (región západná Európa), migrácie sú na nej spustené a jej `database_id` je vo `wrangler.jsonc`.
+
+**Automatické nasadenie z GitHubu (odporúčané):**
+
+1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Import a repository** → vyber `Jurgo88/po-znamosti`.
+2. Build command: `npx opennextjs-cloudflare build`, Deploy command: `npx opennextjs-cloudflare deploy`.
+3. Vo workeri `po-znamosti` → **Settings → Variables and Secrets** pridaj tajomstvá:
+   - `BETTER_AUTH_SECRET` (vygeneruj: `openssl rand -base64 32`)
+   - `RESEND_API_KEY` (z [resend.com](https://resend.com))
+4. Každý push do `main` sa potom nasadí sám. Aplikácia pobeží na `https://po-znamosti.<tvoj-subdomain>.workers.dev`.
+
+**Ručne z počítača:** `npx wrangler login`, nastav tajomstvá cez `npx wrangler secret put BETTER_AUTH_SECRET` a `npx wrangler secret put RESEND_API_KEY`, potom `npm run deploy`.
+
+**Nové migrácie** spúšťaj pred nasadením: `npm run db:migrate:remote`.
+
+**E-maily:** kým nemáš v Resend overenú vlastnú doménu, odosielateľ je `onboarding@resend.dev` a Resend doručí e-maily iba na adresu tvojho Resend účtu. Na testovanie s kamošmi treba doménu overiť a zmeniť `EMAIL_FROM`.
+
+**Vlastná doména:** vo workeri → **Settings → Domains & Routes** pridaj doménu a do `vars` vo `wrangler.jsonc` doplň `"BETTER_AUTH_URL": "https://poznamosti.sk"`.
 
 ## Štruktúra
 
 ```
 src/
   app/
-    actions.ts          serverové akcie (profil, pozvánky, známosti)
+    actions.ts          serverové akcie: profil, pozvánky, známosti
+    core-actions.ts     serverové akcie: zaručenie sa, služby, kontakt
+    hladat/             vyhľadávanie v sieti do 2 krokov
+    odporucit/          zaručenie sa za známeho alebo cez pozvánku
+    clovek/[id]/        profil poskytovateľa a kontaktný formulár
     prihlasenie/        prihlásenie magickým odkazom
     profil/             úprava profilu
     siet/               moja sieť: známi a pozvánky

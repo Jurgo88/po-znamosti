@@ -1,6 +1,7 @@
 "use server";
 
 import { and, eq, gt, isNull } from "drizzle-orm";
+import type { BatchItem } from "drizzle-orm/batch";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -34,7 +35,7 @@ const profileSchema = z.object({
   phoneVisible: z.boolean(),
 });
 
-export type FormState = { error?: string; ok?: boolean };
+export type FormState = { error?: string; ok?: boolean; token?: string };
 
 export async function saveProfile(_prev: FormState, form: FormData): Promise<FormState> {
   const user = await requireUser("/profil");
@@ -84,16 +85,23 @@ function newToken() {
 export async function createInvite(_prev: FormState, form: FormData): Promise<FormState> {
   const user = await requireProfile("/siet");
   const inviteeName = String(form.get("inviteeName") ?? "").trim().slice(0, 80) || null;
-  await getDb()
-    .insert(schema.invite)
-    .values({
-      token: newToken(),
-      fromUserId: user.id,
-      inviteeName,
-      expiresAt: new Date(Date.now() + INVITE_DAYS * 24 * 60 * 60 * 1000),
-    });
+  const categoryId = Number(form.get("categoryId")) || null;
+  const note = String(form.get("note") ?? "").trim().slice(0, 300) || null;
+  if (categoryId && !inviteeName) return { error: "Napíš, koho odporúčaš." };
+  const db = getDb();
+  if (categoryId && !(await db.query.category.findFirst({ where: eq(schema.category.id, categoryId) })))
+    return { error: "Vyber službu." };
+  const token = newToken();
+  await db.insert(schema.invite).values({
+    token,
+    fromUserId: user.id,
+    inviteeName,
+    categoryId,
+    note: categoryId ? note : null,
+    expiresAt: new Date(Date.now() + INVITE_DAYS * 24 * 60 * 60 * 1000),
+  });
   revalidatePath("/siet");
-  return { ok: true };
+  return { ok: true, token };
 }
 
 export async function cancelInvite(form: FormData) {
@@ -111,7 +119,7 @@ export async function cancelInvite(form: FormData) {
   revalidatePath("/siet");
 }
 
-/** Prijatie pozvánky: vznikne známosť (a neskôr aj zaručenie, ak ho pozvánka nesie). */
+/** Prijatie pozvánky: vznikne známosť, a ak pozvánka nesie odporúčanie, aj zaručenie. */
 export async function acceptInvite(form: FormData) {
   const token = String(form.get("token") ?? "");
   const user = await requireProfile(`/pozvanka/${token}`);
@@ -128,7 +136,7 @@ export async function acceptInvite(form: FormData) {
   if (inv.fromUserId === user.id) redirect("/siet");
 
   const [userA, userB] = orderPair(inv.fromUserId, user.id);
-  await db.batch([
+  const statements: BatchItem<"sqlite">[] = [
     db
       .update(schema.invite)
       .set({ acceptedBy: user.id, acceptedAt: new Date() })
@@ -140,9 +148,28 @@ export async function acceptInvite(form: FormData) {
         target: [schema.connection.userA, schema.connection.userB],
         set: { status: "confirmed" },
       }),
-  ]);
+  ];
+  if (inv.categoryId) {
+    statements.push(
+      db
+        .insert(schema.vouch)
+        .values({
+          fromUserId: inv.fromUserId,
+          forUserId: user.id,
+          categoryId: inv.categoryId,
+          note: inv.note,
+        })
+        .onConflictDoNothing(),
+      // Služba čaká na potvrdenie poskytovateľom (active = false)
+      db
+        .insert(schema.providerService)
+        .values({ userId: user.id, categoryId: inv.categoryId, district: user.district })
+        .onConflictDoNothing(),
+    );
+  }
+  await db.batch(statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]]);
 
-  redirect("/siet?novy=1");
+  redirect(inv.categoryId ? "/profil?sluzby=1#sluzby" : "/siet?novy=1");
 }
 
 /* ---------- Známosti ---------- */

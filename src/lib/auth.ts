@@ -13,7 +13,8 @@ export function getAuth() {
   const { env } = getCloudflareContext();
   return betterAuth({
     secret: env.BETTER_AUTH_SECRET,
-    baseURL: env.BETTER_AUTH_URL,
+    // Bez BETTER_AUTH_URL si Better Auth adresu zistí z požiadavky.
+    baseURL: env.BETTER_AUTH_URL || undefined,
     database: drizzleAdapter(getDb(), {
       provider: "sqlite",
       schema: {
