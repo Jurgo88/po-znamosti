@@ -12,6 +12,7 @@ import { DISTRICTS } from "@/data/districts";
 import { getAuth } from "@/lib/auth";
 import { orderPair } from "@/lib/connections";
 import { requireProfile, requireUser } from "@/lib/session";
+import { getBaseUrl } from "@/lib/url";
 
 const INVITE_DAYS = 30;
 
@@ -204,7 +205,7 @@ export async function joinViaInvite(_prev: FormState, form: FormData): Promise<F
   // Better Auth vytvorí prihlasovací odkaz; namiesto e-mailu naň človeka rovno pošleme.
   let url: string | undefined;
   const next = `/pozvanka/${token}`;
-  await getAuth({ captureMagicLink: (u) => (url = u) }).api.signInMagicLink({
+  await getAuth({ captureMagicLink: (u) => (url = u), baseURL: await getBaseUrl() }).api.signInMagicLink({
     body: { email, callbackURL: next, newUserCallbackURL: `/profil?next=${encodeURIComponent(next)}` },
     headers: await headers(),
   });
