@@ -27,7 +27,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               Po známosti
             </Link>
             {user ? (
-              <div className="flex items-center gap-4 text-sm">
+              <div className="flex items-center gap-3 text-sm sm:gap-4">
+                <Link href="/hladat" className="hover:underline">
+                  Hľadať
+                </Link>
+                <Link href="/odporucit" className="hover:underline">
+                  Odporučiť
+                </Link>
                 <Link href="/siet" className="hover:underline">
                   Moja sieť
                 </Link>

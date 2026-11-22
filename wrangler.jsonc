@@ -19,14 +19,15 @@
     {
       "binding": "DB",
       "database_name": "po-znamosti",
-      // Po `npx wrangler d1 create po-znamosti` sem vlož vrátené database_id
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "fb785394-4f41-4e08-95ba-b444be76127f",
       "migrations_dir": "drizzle/migrations"
     }
   ],
   "vars": {
-    "BETTER_AUTH_URL": "https://poznamosti.sk",
-    "EMAIL_FROM": "Po známosti <prihlasenie@poznamosti.sk>"
+    // Kým nie je vlastná doména, BETTER_AUTH_URL nenastavuj: adresa sa zistí z požiadavky.
+    // Po pripojení domény pridaj: "BETTER_AUTH_URL": "https://poznamosti.sk"
+    // Odosielateľ musí byť z domény overenej v Resend (dovtedy onboarding@resend.dev).
+    "EMAIL_FROM": "Po známosti <onboarding@resend.dev>"
   },
   "observability": { "enabled": true }
 }

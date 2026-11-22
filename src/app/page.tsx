@@ -13,8 +13,8 @@ export default async function Home() {
           Žiadne anonymné recenzie. Uvidíš, ktorý tvoj známy sa za koho zaručí: „Jurgo pozná Jana a
           odporúča ho ako stolára.“
         </p>
-        <Link href={user ? "/siet" : "/prihlasenie"} className="btn">
-          {user ? "Moja sieť" : "Začať"}
+        <Link href={user ? "/hladat" : "/prihlasenie"} className="btn">
+          {user ? "Hľadať v sieti" : "Začať"}
         </Link>
       </section>
       <section className="grid gap-4 sm:grid-cols-3">

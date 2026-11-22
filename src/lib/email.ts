@@ -12,7 +12,7 @@ export async function sendEmail(email: Email) {
   }
   const resend = new Resend(env.RESEND_API_KEY);
   const { error } = await resend.emails.send({
-    from: env.EMAIL_FROM ?? "Po známosti <prihlasenie@poznamosti.sk>",
+    from: env.EMAIL_FROM ?? "Po známosti <onboarding@resend.dev>",
     to: email.to,
     subject: email.subject,
     text: email.text,

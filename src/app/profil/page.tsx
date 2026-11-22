@@ -1,14 +1,15 @@
 import { signOut } from "@/app/actions";
 import { requireUser } from "@/lib/session";
 import { ProfileForm } from "./profile-form";
+import { ProfileServices } from "./services";
 
 export default async function ProfilePage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; sluzby?: string }>;
 }) {
   const user = await requireUser("/profil");
-  const { next } = await searchParams;
+  const { next, sluzby } = await searchParams;
   const isNew = !user.name || !user.district;
   return (
     <div className="mx-auto max-w-lg space-y-6">
@@ -30,6 +31,7 @@ export default async function ProfilePage({
           phoneVisible: user.phoneVisible,
         }}
       />
+      {!isNew && <ProfileServices userId={user.id} highlight={Boolean(sluzby)} />}
       {!isNew && (
         <form action={signOut}>
           <button className="text-sm text-stone-500 hover:underline">Odhlásiť sa</button>
