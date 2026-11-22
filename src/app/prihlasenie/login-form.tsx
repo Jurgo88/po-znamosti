@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 
@@ -53,6 +54,17 @@ export function LoginForm({ next }: { next: string }) {
       <button type="submit" className="btn w-full" disabled={state === "sending"}>
         {state === "sending" ? "Posielam…" : "Poslať odkaz"}
       </button>
+      <p className="text-center text-xs text-muted">
+        Pokračovaním súhlasíš s{" "}
+        <Link href="/podmienky" className="underline">
+          podmienkami
+        </Link>{" "}
+        a berieš na vedomie{" "}
+        <Link href="/sukromie" className="underline">
+          ochranu súkromia
+        </Link>
+        .
+      </p>
     </form>
   );
 }

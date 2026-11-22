@@ -40,3 +40,15 @@
     @apply border-l-2 border-brand pl-3 text-sm;
   }
 }
+
+/* Právne stránky */
+.prose-legal h2 {
+  @apply pt-2 text-lg font-semibold;
+}
+.prose-legal ul {
+  @apply list-disc space-y-1 pl-5;
+}
+.prose-legal p,
+.prose-legal li {
+  @apply leading-relaxed;
+}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { and, desc, eq, gt, isNull } from "drizzle-orm";
 import { cancelInvite, removeConnection } from "@/app/actions";
 import { getDb, schema } from "@/db";
@@ -6,6 +7,7 @@ import { requireProfile } from "@/lib/session";
 import { getBaseUrl } from "@/lib/url";
 import { CopyLink } from "./copy-link";
 import { InviteForm } from "./invite-form";
+import { Avatar } from "@/components/avatar";
 
 export default async function NetworkPage({
   searchParams,
@@ -81,10 +83,13 @@ export default async function NetworkPage({
           <ul className="card divide-y divide-hair p-0">
             {friends.map((f) => (
               <li key={f.id} className="flex items-center justify-between gap-3 px-5 py-3">
-                <div>
-                  <p className="font-medium">{f.name}</p>
-                  {f.district && <p className="text-sm text-muted">{f.district}</p>}
-                </div>
+                <Link href={`/clovek/${f.id}`} className="group flex min-w-0 flex-1 items-center gap-3">
+                  <Avatar name={f.name} />
+                  <div className="min-w-0">
+                    <p className="truncate font-medium group-hover:underline">{f.name}</p>
+                    {f.district && <p className="text-sm text-muted">{f.district}</p>}
+                  </div>
+                </Link>
                 <form action={removeConnection}>
                   <input type="hidden" name="userId" value={f.id} />
                   <button className="text-sm text-muted hover:underline">Odobrať</button>
