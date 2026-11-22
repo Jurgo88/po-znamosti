@@ -52,6 +52,8 @@ Databáza D1 `po-znamosti` už existuje (región západná Európa), migrácie s
 
 **E-maily:** kým nemáš v Resend overenú vlastnú doménu, odosielateľ je `onboarding@resend.dev` a Resend doručí e-maily iba na adresu tvojho Resend účtu. Na testovanie s kamošmi treba doménu overiť a zmeniť `EMAIL_FROM`.
 
+**Registrácia cez pozvánku:** s `INVITE_LOGIN=1` (vo `wrangler.jsonc`) sa nový človek zaregistruje priamo z pozvánky, iba zadaním e-mailu, bez prihlasovacieho odkazu. Funguje len pre e-maily, ktoré ešte nemajú účet, aby sa cudzí účet nedal prevziať. Session platí 60 dní. Kto sa odhlási alebo príde z iného zariadenia, potrebuje e-mailový odkaz, teda overenú doménu.
+
 **Vlastná doména:** vo workeri → **Settings → Domains & Routes** pridaj doménu a do `vars` vo `wrangler.jsonc` doplň `"BETTER_AUTH_URL": "https://poznamosti.sk"`.
 
 ## Štruktúra

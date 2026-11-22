@@ -27,7 +27,10 @@
     // Kým nie je vlastná doména, BETTER_AUTH_URL nenastavuj: adresa sa zistí z požiadavky.
     // Po pripojení domény pridaj: "BETTER_AUTH_URL": "https://poznamosti.sk"
     // Odosielateľ musí byť z domény overenej v Resend (dovtedy onboarding@resend.dev).
-    "EMAIL_FROM": "Po známosti <onboarding@resend.dev>"
+    "EMAIL_FROM": "Po známosti <onboarding@resend.dev>",
+    // "1" = kto má platnú pozvánku, zaregistruje sa bez e-mailového odkazu.
+    // Kým Resend nemá overenú doménu, je to jediná cesta, ako sa pridajú noví ľudia.
+    "INVITE_LOGIN": "1"
   },
   "observability": { "enabled": true }
 }

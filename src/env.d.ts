@@ -8,6 +8,8 @@ declare global {
     BETTER_AUTH_URL?: string;
     RESEND_API_KEY?: string;
     EMAIL_FROM?: string;
+    /** "1" = nový človek sa môže zaregistrovať priamo cez pozvánku, bez e-mailu. */
+    INVITE_LOGIN?: string;
   }
 }
 

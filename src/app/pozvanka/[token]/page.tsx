@@ -1,9 +1,11 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import Link from "next/link";
 import { eq } from "drizzle-orm";
 import { acceptInvite } from "@/app/actions";
 import { getDb, schema } from "@/db";
 import { areConnected } from "@/lib/connections";
 import { getCurrentUser } from "@/lib/session";
+import { JoinForm } from "./join-form";
 
 export default async function InvitePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
@@ -46,6 +48,8 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
   }
 
   const next = `/pozvanka/${token}`;
+  const loginHref = `/prihlasenie?next=${encodeURIComponent(next)}`;
+  const inviteLogin = getCloudflareContext().env.INVITE_LOGIN === "1";
   return (
     <div className="mx-auto max-w-md space-y-6 text-center">
       <div>
@@ -60,8 +64,10 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
           <input type="hidden" name="token" value={token} />
           <button className="btn w-full">Prijať pozvánku</button>
         </form>
+      ) : inviteLogin ? (
+        <JoinForm token={token} loginHref={loginHref} />
       ) : (
-        <Link href={`/prihlasenie?next=${encodeURIComponent(next)}`} className="btn w-full">
+        <Link href={loginHref} className="btn w-full">
           Prihlásiť sa a prijať
         </Link>
       )}
