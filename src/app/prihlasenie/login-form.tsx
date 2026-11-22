@@ -21,7 +21,7 @@ export function LoginForm({ next }: { next: string }) {
     return (
       <div className="card">
         <p className="font-medium">Skontroluj si e-mail.</p>
-        <p className="mt-1 text-sm text-stone-600">
+        <p className="mt-1 text-sm text-muted">
           Na adresu {email} sme poslali odkaz na prihlásenie. Platí 15 minút.
         </p>
       </div>

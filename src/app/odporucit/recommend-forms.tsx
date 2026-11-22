@@ -20,7 +20,7 @@ export function RecommendForms({
   const [mode, setMode] = useState<"friend" | "invite">(friends.length ? "friend" : "invite");
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-1 rounded-lg bg-stone-200 p-1 text-sm">
+      <div className="grid grid-cols-2 gap-1 rounded-ui bg-surface p-1 text-sm">
         {(
           [
             ["friend", "Známy v aplikácii"],
@@ -31,7 +31,7 @@ export function RecommendForms({
             key={m}
             type="button"
             onClick={() => setMode(m)}
-            className={`rounded-md px-3 py-2 font-medium ${mode === m ? "bg-white shadow-sm" : "text-stone-600"}`}
+            className={`rounded-[4px] px-3 py-2.5 font-medium ${mode === m ? "bg-white shadow-sm" : "text-muted"}`}
           >
             {label}
           </button>
@@ -70,7 +70,7 @@ function NoteField() {
   return (
     <div>
       <label htmlFor="note" className="label">
-        Prečo odporúčaš? <span className="font-normal text-stone-500">(nepovinné)</span>
+        Prečo odporúčaš? <span className="font-normal text-muted">(nepovinné)</span>
       </label>
       <textarea
         id="note"
@@ -96,7 +96,7 @@ function FriendForm({
   const [state, action, pending] = useActionState<FormState, FormData>(vouchForFriend, {});
   if (friends.length === 0)
     return (
-      <p className="card text-sm text-stone-600">
+      <p className="card text-sm text-muted">
         Zatiaľ nemáš v aplikácii žiadnych známych. Odporuč niekoho cez pozvánku.
       </p>
     );
@@ -104,7 +104,7 @@ function FriendForm({
     return (
       <div className="card space-y-1">
         <p className="font-medium">Hotovo, zaručenie je uložené.</p>
-        <p className="text-sm text-stone-600">
+        <p className="text-sm text-muted">
           Ak túto službu ešte nemá v profile, zobrazí sa mu na potvrdenie.
         </p>
       </div>
@@ -148,7 +148,7 @@ function InviteVouchForm({ categories, baseUrl }: { categories: Option[]; baseUr
     return (
       <div className="card space-y-3">
         <p className="font-medium">Pozvánka s odporúčaním je pripravená.</p>
-        <p className="text-sm text-stone-600">
+        <p className="text-sm text-muted">
           Pošli odkaz. Keď sa zaregistruje, budete prepojení a tvoje odporúčanie sa mu
           zobrazí na potvrdenie. Odkaz platí 30 dní.
         </p>

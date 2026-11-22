@@ -37,13 +37,13 @@ export function ProfileForm({ initial, next }: { initial: Initial; next?: string
       </div>
       <div>
         <label htmlFor="bio" className="label">
-          Pár slov o sebe <span className="font-normal text-stone-500">(nepovinné)</span>
+          Pár slov o sebe <span className="font-normal text-muted">(nepovinné)</span>
         </label>
         <textarea id="bio" name="bio" rows={3} className="input" defaultValue={initial.bio} />
       </div>
       <div>
         <label htmlFor="phone" className="label">
-          Telefón <span className="font-normal text-stone-500">(nepovinné)</span>
+          Telefón <span className="font-normal text-muted">(nepovinné)</span>
         </label>
         <input
           id="phone"
@@ -58,7 +58,7 @@ export function ProfileForm({ initial, next }: { initial: Initial; next?: string
         </label>
       </div>
       {state.error && <p className="text-sm text-red-700">{state.error}</p>}
-      {state.ok && <p className="text-sm text-emerald-700">Uložené.</p>}
+      {state.ok && <p className="text-sm text-brand">Uložené.</p>}
       <button className="btn" disabled={pending}>
         {pending ? "Ukladám…" : "Uložiť"}
       </button>

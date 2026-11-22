@@ -31,7 +31,7 @@ export function JoinForm({ token, loginHref }: { token: string; loginHref: strin
       <button className="btn w-full" disabled={pending || !!state.redirectTo}>
         {pending || state.redirectTo ? "Chvíľu…" : "Pridať sa"}
       </button>
-      <p className="text-center text-sm text-stone-600">
+      <p className="text-center text-sm text-muted">
         Už máš účet?{" "}
         <Link href={loginHref} className="underline">
           Prihlásiť sa

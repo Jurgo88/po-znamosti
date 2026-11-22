@@ -6,6 +6,8 @@ import { areConnected } from "@/lib/connections";
 import { isWithinReach, vouchesFromMyNetwork } from "@/lib/network";
 import { requireProfile } from "@/lib/session";
 import { ContactForm } from "./contact-form";
+import { Avatar } from "@/components/avatar";
+import { Chain } from "@/components/chain";
 
 export default async function PersonPage({
   params,
@@ -20,7 +22,7 @@ export default async function PersonPage({
   const db = getDb();
   if (id === me.id) {
     return (
-      <p className="text-stone-600">
+      <p className="text-muted">
         Toto je tvoj profil. Upraviť ho môžeš v sekcii{" "}
         <Link href="/profil" className="underline">
           Profil
@@ -50,27 +52,42 @@ export default async function PersonPage({
   ]);
   if (!person) notFound();
   const selected = services.find((s) => s.slug === sluzba) ?? services[0];
+  const first = person.name.split(" ")[0];
+  const via = vouches.find((v) => v.from_user_id !== me.id);
+  const chain = friend ? ["Ty", first] : ["Ty", via?.name ?? "známy", first];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">{person.name}</h1>
-        <p className="text-stone-500">
-          {person.district}
-          {friend ? " · tvoj známy" : ""}
-        </p>
-        {person.bio && <p className="mt-3 text-stone-700">{person.bio}</p>}
+    <div className="mx-auto max-w-3xl space-y-6">
+      <Link href="/hladat" className="text-sm font-medium text-brand">
+        ← Späť na hľadanie
+      </Link>
+      <div className="space-y-4">
+        <div className="flex items-center gap-4">
+          <Avatar name={person.name} size={56} />
+          <div>
+            <h1 className="text-[26px] font-bold leading-tight tracking-tight">{person.name}</h1>
+            <p className="text-muted">
+              {person.district}
+              {friend ? " · tvoj známy" : ""}
+            </p>
+          </div>
+        </div>
+        {person.bio && <p className="text-ink">{person.bio}</p>}
+        <div className="space-y-2 rounded-ui bg-surface p-4">
+          <p className="text-xs text-muted">Ako ho poznáš</p>
+          <Chain people={chain} size="md" />
+        </div>
       </div>
 
       {services.length > 0 && (
         <section className="space-y-2">
           <h2 className="font-semibold">Služby</h2>
-          <ul className="card divide-y divide-stone-100 p-0">
+          <ul className="card divide-y divide-hair p-0">
             {services.map((s) => (
               <li key={s.categoryId} className="px-5 py-3">
                 <p className="font-medium">{s.name}</p>
-                {s.description && <p className="text-sm text-stone-600">{s.description}</p>}
-                {s.district && <p className="text-xs text-stone-500">{s.district}</p>}
+                {s.description && <p className="text-sm text-muted">{s.description}</p>}
+                {s.district && <p className="text-xs text-muted">{s.district}</p>}
               </li>
             ))}
           </ul>
@@ -80,14 +97,13 @@ export default async function PersonPage({
       {vouches.length > 0 && (
         <section className="space-y-2">
           <h2 className="font-semibold">Odporúčania od tvojich známych</h2>
-          <ul className="card space-y-3">
+          <ul className="space-y-3">
             {vouches.map((v, i) => (
-              <li key={i} className="text-sm">
-                <span className="font-medium">
-                  {v.from_user_id === me.id ? "Ty" : v.name}
-                </span>{" "}
-                <span className="text-stone-500">· {v.category}</span>
-                {v.note && <p className="text-stone-700">„{v.note}“</p>}
+              <li key={i} className="quote">
+                {v.note ?? "Zaručuje sa."}
+                <span className="block text-xs text-muted">
+                  {v.from_user_id === me.id ? "Ty" : v.name} · {v.category}
+                </span>
               </li>
             ))}
           </ul>
