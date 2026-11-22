@@ -12,6 +12,11 @@ import { sendEmail } from "@/lib/email";
 type AuthOptions = {
   /** Ak je zadané, prihlasovací odkaz sa neposiela e-mailom, ale odovzdá sa sem. */
   captureMagicLink?: (url: string) => void;
+  /**
+   * Adresa aplikácie pre volania auth.api zo servera (server actions), kde
+   * Better Auth nemá požiadavku, z ktorej by ju zistil.
+   */
+  baseURL?: string;
 };
 
 export function getAuth(options: AuthOptions = {}) {
@@ -19,7 +24,7 @@ export function getAuth(options: AuthOptions = {}) {
   return betterAuth({
     secret: env.BETTER_AUTH_SECRET,
     // Bez BETTER_AUTH_URL si Better Auth adresu zistí z požiadavky.
-    baseURL: env.BETTER_AUTH_URL || undefined,
+    baseURL: env.BETTER_AUTH_URL || options.baseURL || undefined,
     database: drizzleAdapter(getDb(), {
       provider: "sqlite",
       schema: {
