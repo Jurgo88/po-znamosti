@@ -1,6 +1,5 @@
 "use server";
 
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { and, eq, gt, isNull } from "drizzle-orm";
 import type { BatchItem } from "drizzle-orm/batch";
 import { revalidatePath } from "next/cache";
@@ -12,7 +11,6 @@ import { DISTRICTS } from "@/data/districts";
 import { getAuth } from "@/lib/auth";
 import { orderPair } from "@/lib/connections";
 import { requireProfile, requireUser } from "@/lib/session";
-import { getBaseUrl } from "@/lib/url";
 
 const INVITE_DAYS = 30;
 
@@ -37,7 +35,7 @@ const profileSchema = z.object({
   phoneVisible: z.boolean(),
 });
 
-export type FormState = { error?: string; ok?: boolean; token?: string; redirectTo?: string };
+export type FormState = { error?: string; ok?: boolean; token?: string };
 
 export async function saveProfile(_prev: FormState, form: FormData): Promise<FormState> {
   const user = await requireUser("/profil");
@@ -172,46 +170,6 @@ export async function acceptInvite(form: FormData) {
   await db.batch(statements as [BatchItem<"sqlite">, ...BatchItem<"sqlite">[]]);
 
   redirect(inv.categoryId ? "/profil?sluzby=1#sluzby" : "/siet?novy=1");
-}
-
-/**
- * Registrácia cez pozvánku bez e-mailového odkazu (zapína INVITE_LOGIN=1).
- * Platná pozvánka slúži ako dôkaz, že človeka pozval známy. Len pre nové
- * e-maily: existujúci účet sa takto prihlásiť nedá, inak by ho mohol
- * prevziať ktokoľvek, kto pozná cudzí e-mail.
- */
-export async function joinViaInvite(_prev: FormState, form: FormData): Promise<FormState> {
-  const { env } = getCloudflareContext();
-  if (env.INVITE_LOGIN !== "1") return { error: "Registrácia cez pozvánku je vypnutá." };
-
-  const token = String(form.get("token") ?? "");
-  const parsed = z.string().trim().toLowerCase().email().max(200).safeParse(form.get("email"));
-  if (!parsed.success) return { error: "Zadaj platný e-mail." };
-  const email = parsed.data;
-
-  const db = getDb();
-  const inv = await db.query.invite.findFirst({
-    where: and(
-      eq(schema.invite.token, token),
-      isNull(schema.invite.acceptedBy),
-      gt(schema.invite.expiresAt, new Date()),
-    ),
-  });
-  if (!inv) return { error: "Pozvánka už neplatí." };
-
-  if (await db.query.user.findFirst({ where: eq(schema.user.email, email), columns: { id: true } }))
-    return { error: "existing" };
-
-  // Better Auth vytvorí prihlasovací odkaz; namiesto e-mailu naň človeka rovno pošleme.
-  let url: string | undefined;
-  const next = `/pozvanka/${token}`;
-  await getAuth({ captureMagicLink: (u) => (url = u), baseURL: await getBaseUrl() }).api.signInMagicLink({
-    body: { email, callbackURL: next, newUserCallbackURL: `/profil?next=${encodeURIComponent(next)}` },
-    headers: await headers(),
-  });
-  if (!url) return { error: "Registrácia sa nepodarila. Skús to znova." };
-  // Plná navigácia v prehliadači (nie redirect zo server action), aby sa uložila session cookie.
-  return { redirectTo: url };
 }
 
 /* ---------- Známosti ---------- */

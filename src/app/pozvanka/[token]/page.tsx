@@ -7,8 +7,15 @@ import { areConnected } from "@/lib/connections";
 import { getCurrentUser } from "@/lib/session";
 import { JoinForm } from "./join-form";
 
-export default async function InvitePage({ params }: { params: Promise<{ token: string }> }) {
+export default async function InvitePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ token: string }>;
+  searchParams: Promise<{ chyba?: string }>;
+}) {
   const { token } = await params;
+  const { chyba } = await searchParams;
   const db = getDb();
   const inv = await db.query.invite.findFirst({ where: eq(schema.invite.token, token) });
   const from = inv
@@ -65,7 +72,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
           <button className="btn w-full">Prijať pozvánku</button>
         </form>
       ) : inviteLogin ? (
-        <JoinForm token={token} loginHref={loginHref} />
+        <JoinForm token={token} loginHref={loginHref} error={chyba} />
       ) : (
         <Link href={loginHref} className="btn w-full">
           Prihlásiť sa a prijať

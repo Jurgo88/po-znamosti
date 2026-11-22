@@ -1,23 +1,34 @@
-"use client";
 import Link from "next/link";
-import { useActionState, useEffect } from "react";
-import { joinViaInvite, type FormState } from "@/app/actions";
 
-export function JoinForm({ token, loginHref }: { token: string; loginHref: string }) {
-  const [state, action, pending] = useActionState<FormState, FormData>(joinViaInvite, {});
-  useEffect(() => {
-    if (state.redirectTo) window.location.assign(state.redirectTo);
-  }, [state.redirectTo]);
+const ERRORS: Record<string, string> = {
+  email: "Zadaj platný e-mail.",
+  vypnute: "Registrácia cez pozvánku je vypnutá.",
+  chyba: "Registrácia sa nepodarila. Skús to znova.",
+};
+
+/** Obyčajný HTML formulár (bez JavaScriptu), spracuje ho route ./pridat. */
+export function JoinForm({
+  token,
+  loginHref,
+  error,
+}: {
+  token: string;
+  loginHref: string;
+  error?: string;
+}) {
   return (
-    <form action={action} className="space-y-3 text-left">
-      <input type="hidden" name="token" value={token} />
+    <form
+      method="post"
+      action={`/pozvanka/${encodeURIComponent(token)}/pridat`}
+      className="space-y-3 text-left"
+    >
       <div>
         <label htmlFor="email" className="label">
           Tvoj e-mail
         </label>
         <input id="email" name="email" type="email" required autoComplete="email" className="input" />
       </div>
-      {state.error === "existing" ? (
+      {error === "ucet" ? (
         <p className="text-sm text-red-700">
           Tento e-mail už v Po známosti má účet.{" "}
           <Link href={loginHref} className="underline">
@@ -26,12 +37,10 @@ export function JoinForm({ token, loginHref }: { token: string; loginHref: strin
           a pozvánku potom prijmeš.
         </p>
       ) : (
-        state.error && <p className="text-sm text-red-700">{state.error}</p>
+        error && ERRORS[error] && <p className="text-sm text-red-700">{ERRORS[error]}</p>
       )}
-      <button className="btn w-full" disabled={pending || !!state.redirectTo}>
-        {pending || state.redirectTo ? "Chvíľu…" : "Pridať sa"}
-      </button>
-      <p className="text-center text-sm text-muted">
+      <button className="btn w-full">Pridať sa</button>
+      <p className="text-center text-sm text-stone-600">
         Už máš účet?{" "}
         <Link href={loginHref} className="underline">
           Prihlásiť sa
