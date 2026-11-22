@@ -1,0 +1,5 @@
+# Skopíruj do .dev.vars a doplň. Súbor .dev.vars sa necommituje.
+BETTER_AUTH_SECRET=vygeneruj-cez-openssl-rand-base64-32
+BETTER_AUTH_URL=http://localhost:3000
+# Bez RESEND_API_KEY sa prihlasovací odkaz iba vypíše do konzoly.
+RESEND_API_KEY=
