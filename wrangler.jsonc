@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "po-znamosti",
+  "name": "poznamosti",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
@@ -12,7 +12,7 @@
     {
       // Odkaz na samého seba, meno sa musí zhodovať s menom workera
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "po-znamosti"
+      "service": "poznamosti"
     }
   ],
   "d1_databases": [

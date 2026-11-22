@@ -41,10 +41,10 @@ Databáza D1 `po-znamosti` už existuje (región západná Európa), migrácie s
 
 1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Import a repository** → vyber `Jurgo88/po-znamosti`.
 2. Build command: `npx opennextjs-cloudflare build`, Deploy command: `npx opennextjs-cloudflare deploy`.
-3. Vo workeri `po-znamosti` → **Settings → Variables and Secrets** pridaj tajomstvá:
+3. Vo workeri `poznamosti` → **Settings → Variables and Secrets** pridaj tajomstvá:
    - `BETTER_AUTH_SECRET` (vygeneruj: `openssl rand -base64 32`)
    - `RESEND_API_KEY` (z [resend.com](https://resend.com))
-4. Každý push do `main` sa potom nasadí sám. Aplikácia pobeží na `https://po-znamosti.<tvoj-subdomain>.workers.dev`.
+4. Každý push do `main` sa potom nasadí sám. Aplikácia pobeží na `https://poznamosti.<tvoj-subdomain>.workers.dev`.
 
 **Ručne z počítača:** `npx wrangler login`, nastav tajomstvá cez `npx wrangler secret put BETTER_AUTH_SECRET` a `npx wrangler secret put RESEND_API_KEY`, potom `npm run deploy`.
 
