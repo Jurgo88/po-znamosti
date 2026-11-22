@@ -32,5 +32,20 @@
     // Kým Resend nemá overenú doménu, je to jediná cesta, ako sa pridajú noví ľudia.
     "INVITE_LOGIN": "1"
   },
+  // Náhľady z PR (Workers Builds) bežia na samostatnej testovacej databáze, nie na ostrej.
+  "previews": {
+    "vars": {
+      "EMAIL_FROM": "Po známosti <onboarding@resend.dev>",
+      "INVITE_LOGIN": "1"
+    },
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_name": "po-znamosti-preview",
+        "database_id": "40b2b0f4-2d1f-4c68-a5b1-4e314569bf98",
+        "migrations_dir": "drizzle/migrations"
+      }
+    ]
+  },
   "observability": { "enabled": true }
 }
