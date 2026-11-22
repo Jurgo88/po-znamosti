@@ -53,9 +53,9 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
   return (
     <div className="mx-auto max-w-md space-y-6 text-center">
       <div>
-        <p className="text-stone-600">Pozvánka do Po známosti</p>
+        <p className="text-muted">Pozvánka do Po známosti</p>
         <h1 className="mt-1 text-2xl font-bold">{from.name} ťa pozýva do svojej siete</h1>
-        <p className="mt-3 text-stone-600">
+        <p className="mt-3 text-muted">
           Budete prepojení ako známi. Uvidíš, koho {from.name} odporúča, a môže odporučiť aj teba.
         </p>
       </div>
@@ -79,7 +79,7 @@ function Message({ title, children }: { title: string; children: React.ReactNode
   return (
     <div className="mx-auto max-w-md space-y-2 text-center">
       <h1 className="text-2xl font-bold">{title}</h1>
-      <div className="text-stone-600">{children}</div>
+      <div className="text-muted">{children}</div>
     </div>
   );
 }

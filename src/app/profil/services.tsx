@@ -54,17 +54,17 @@ export async function ProfileServices({ userId, highlight }: { userId: string; h
         {pending.map((s) => (
           <div
             key={s.id}
-            className={`card space-y-3 ${highlight ? "border-emerald-400 ring-2 ring-emerald-700/10" : ""}`}
+            className={`card space-y-3 ${highlight ? "border-brand/60 ring-2 ring-brand/10" : ""}`}
           >
             <div>
               <p className="font-medium">Odporučili ťa ako: {s.name}</p>
               {vouchesFor(s.categoryId).map((v, i) => (
-                <p key={i} className="text-sm text-stone-600">
+                <p key={i} className="text-sm text-muted">
                   {v.fromName}
                   {v.note ? `: „${v.note}“` : ""}
                 </p>
               ))}
-              <p className="mt-1 text-sm text-stone-500">
+              <p className="mt-1 text-sm text-muted">
                 Potvrď, ak túto službu ponúkaš. Až potom ťa nájdu známi tvojich známych.
               </p>
             </div>
@@ -88,19 +88,19 @@ export async function ProfileServices({ userId, highlight }: { userId: string; h
         ))}
 
         {active.length > 0 && (
-          <ul className="card divide-y divide-stone-100 p-0">
+          <ul className="card divide-y divide-hair p-0">
             {active.map((s) => (
               <li key={s.id} className="flex items-start justify-between gap-3 px-5 py-3">
                 <div>
                   <p className="font-medium">{s.name}</p>
-                  {s.description && <p className="text-sm text-stone-600">{s.description}</p>}
-                  <p className="text-xs text-stone-500">
+                  {s.description && <p className="text-sm text-muted">{s.description}</p>}
+                  <p className="text-xs text-muted">
                     Zaručenia: {vouchesFor(s.categoryId).length}
                   </p>
                 </div>
                 <form action={removeService}>
                   <input type="hidden" name="id" value={s.id} />
-                  <button className="text-sm text-stone-500 hover:underline">Odstrániť</button>
+                  <button className="text-sm text-muted hover:underline">Odstrániť</button>
                 </form>
               </li>
             ))}
@@ -117,18 +117,18 @@ export async function ProfileServices({ userId, highlight }: { userId: string; h
       {given.length > 0 && (
         <section className="space-y-3">
           <h2 className="text-lg font-semibold">Za koho sa zaručujem</h2>
-          <ul className="card divide-y divide-stone-100 p-0">
+          <ul className="card divide-y divide-hair p-0">
             {given.map((g) => (
               <li key={g.id} className="flex items-start justify-between gap-3 px-5 py-3">
                 <div>
                   <p className="font-medium">
-                    {g.forName} <span className="font-normal text-stone-500">· {g.category}</span>
+                    {g.forName} <span className="font-normal text-muted">· {g.category}</span>
                   </p>
-                  {g.note && <p className="text-sm text-stone-600">„{g.note}“</p>}
+                  {g.note && <p className="text-sm text-muted">„{g.note}“</p>}
                 </div>
                 <form action={removeVouch}>
                   <input type="hidden" name="id" value={g.id} />
-                  <button className="text-sm text-stone-500 hover:underline">Zrušiť</button>
+                  <button className="text-sm text-muted hover:underline">Zrušiť</button>
                 </form>
               </li>
             ))}

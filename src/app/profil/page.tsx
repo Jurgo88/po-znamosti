@@ -15,7 +15,7 @@ export default async function ProfilePage({
     <div className="mx-auto max-w-lg space-y-6">
       <div>
         <h1 className="text-2xl font-bold">{isNew ? "Vitaj! Doplň si profil" : "Môj profil"}</h1>
-        <p className="mt-1 text-stone-600">
+        <p className="mt-1 text-muted">
           {isNew
             ? "Meno a okres uvidia tvoji známi a ich známi."
             : `Prihlásený ako ${user.email}`}
@@ -34,7 +34,7 @@ export default async function ProfilePage({
       {!isNew && <ProfileServices userId={user.id} highlight={Boolean(sluzby)} />}
       {!isNew && (
         <form action={signOut}>
-          <button className="text-sm text-stone-500 hover:underline">Odhlásiť sa</button>
+          <button className="text-sm text-muted hover:underline">Odhlásiť sa</button>
         </form>
       )}
     </div>

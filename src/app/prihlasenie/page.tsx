@@ -17,7 +17,7 @@ export default async function LoginPage({
     <div className="mx-auto max-w-sm space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Prihlásenie</h1>
-        <p className="mt-1 text-stone-600">
+        <p className="mt-1 text-muted">
           Zadaj e-mail a pošleme ti odkaz na prihlásenie. Bez hesla.
         </p>
       </div>

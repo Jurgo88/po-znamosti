@@ -21,7 +21,7 @@ export default async function RecommendPage({
     <div className="mx-auto max-w-lg space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Odporučiť známeho</h1>
-        <p className="mt-1 text-stone-600">
+        <p className="mt-1 text-muted">
           Zaruč sa za niekoho, koho poznáš a koho prácu odporúčaš. Uvidia to tvoji známi, keď budú
           hľadať danú službu.
         </p>
