@@ -1,10 +1,19 @@
 @import "tailwindcss";
 
-/* Vizuálny smer D „Jednoduchý“: biela plocha, jedna modrá, rohy 6 px, Ubuntu. */
+/*
+ * Vizuálny smer D „Jednoduchý“: svetlosivá plocha, biele karty, jedna modrá, rohy 6 px, Ubuntu.
+ * Motív: cesta cez známych (štvorcové body spojené čiarou), používa sa v reťazi,
+ * krokoch na úvode aj v prázdnych stavoch.
+ */
 @theme inline {
   --font-sans: var(--font-ubuntu), system-ui, sans-serif;
   --color-brand: #00009b;
   --color-brand-dark: #000072;
+  --color-brand-50: #f6f6fd;
+  --color-brand-100: #ebebf8;
+  --color-brand-200: #d5d5f1;
+  --color-brand-300: #a9a9e2;
+  --color-brand-400: #5c5cc4;
   --color-ink: #14152b;
   --color-muted: #5c5f73;
   --color-line: #c6c6c6;
@@ -12,32 +21,57 @@
   --color-surface: #f3f4f8;
   --color-tint: #ebebf8;
   --radius-ui: 6px;
+  --shadow-card: 0 1px 2px rgb(20 21 43 / 0.04), 0 1px 1px rgb(20 21 43 / 0.02);
+  --shadow-raise: 0 6px 20px -8px rgb(0 0 155 / 0.18);
 }
 
 @layer components {
   .btn {
-    @apply inline-flex min-h-12 items-center justify-center rounded-ui bg-brand px-5 text-[15px] font-medium text-white hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50;
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-ui bg-brand px-5 text-[15px] font-medium text-white transition-colors hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50;
   }
   .btn-secondary {
-    @apply inline-flex min-h-12 items-center justify-center rounded-ui border border-line bg-white px-5 text-[15px] font-medium text-ink hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-ui border border-line bg-white px-5 text-[15px] font-medium text-ink transition-colors hover:border-brand-300 hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
+  }
+  .btn-ghost {
+    @apply inline-flex min-h-10 items-center gap-1.5 rounded-ui px-2.5 text-sm text-muted transition-colors hover:bg-surface hover:text-ink;
   }
   .input {
-    @apply min-h-12 w-full rounded-ui border border-line bg-white px-3.5 py-2.5 text-base outline-none focus:border-brand focus:ring-2 focus:ring-brand/20;
+    @apply min-h-12 w-full rounded-ui border border-line bg-white px-3.5 py-2.5 text-base outline-none transition-colors placeholder:text-muted/70 hover:border-brand-300 focus:border-brand focus:ring-2 focus:ring-brand/15;
   }
   .label {
     @apply mb-1.5 block text-sm font-medium;
   }
   .card {
-    @apply rounded-ui border border-hair bg-white p-5;
+    @apply rounded-ui border border-hair bg-white p-5 shadow-card sm:p-6;
   }
   .chip {
-    @apply inline-flex items-center rounded-[4px] border border-line px-3 py-1.5 text-sm;
+    @apply inline-flex min-h-9 items-center gap-1.5 rounded-ui border border-line bg-white px-3 py-1.5 text-sm transition-colors hover:border-brand-300 hover:bg-brand-50;
   }
   .chip-on {
     @apply border-ink bg-ink text-white;
   }
   .quote {
     @apply border-l-2 border-brand pl-3 text-sm;
+  }
+  /* Malý nadpis nad hlavným nadpisom stránky */
+  .eyebrow {
+    @apply text-xs font-medium tracking-[0.08em] text-brand uppercase;
+  }
+  /* Štvorček s ikonou v jemnom odtieni hlavnej farby */
+  .icon-tile {
+    @apply grid size-10 shrink-0 place-items-center rounded-ui bg-brand-100 text-brand;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-[4px] bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand;
+  }
+  .notice {
+    @apply flex items-center gap-2 rounded-ui border border-brand-200 bg-brand-50 px-3.5 py-2.5 text-sm text-brand;
+  }
+  .section-title {
+    @apply flex items-center gap-2 text-[17px] font-bold;
+  }
+  .link {
+    @apply font-medium text-brand underline-offset-4 hover:underline;
   }
 }
 

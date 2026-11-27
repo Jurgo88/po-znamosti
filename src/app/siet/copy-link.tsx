@@ -17,7 +17,7 @@ export function CopyLink({ url }: { url: string }) {
     setTimeout(() => setCopied(false), 2000);
   }
   return (
-    <button type="button" onClick={copy} className="btn-secondary">
+    <button type="button" onClick={copy} className="btn-secondary min-h-10 px-4 text-sm">
       {copied ? "Skopírované" : "Poslať odkaz"}
     </button>
   );

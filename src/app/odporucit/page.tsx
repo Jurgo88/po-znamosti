@@ -4,6 +4,8 @@ import { listConnections } from "@/lib/connections";
 import { requireProfile } from "@/lib/session";
 import { getBaseUrl } from "@/lib/url";
 import { RecommendForms } from "./recommend-forms";
+import { PageHead } from "@/components/page-head";
+import { IconVouch } from "@/components/icons";
 
 export default async function RecommendPage({
   searchParams,
@@ -18,14 +20,11 @@ export default async function RecommendPage({
     db.query.category.findMany({ orderBy: asc(schema.category.name) }),
   ]);
   return (
-    <div className="mx-auto max-w-lg space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Odporučiť známeho</h1>
-        <p className="mt-1 text-muted">
-          Zaruč sa za niekoho, koho poznáš a koho prácu odporúčaš. Uvidia to tvoji známi, keď budú
-          hľadať danú službu.
-        </p>
-      </div>
+    <div className="mx-auto max-w-xl space-y-6">
+      <PageHead icon={<IconVouch size={22} />} eyebrow="Zaručiť sa" title="Zaruč sa za niekoho">
+        Odporuč človeka, s ktorého prácou máš osobnú skúsenosť. Uvidia to tvoji známi, keď budú
+        hľadať danú službu.
+      </PageHead>
       <RecommendForms
         friends={friends.map((f) => ({ id: f.id, name: f.name }))}
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}

@@ -17,8 +17,8 @@ export function ContactForm({
   const [state, action, pending] = useActionState<FormState, FormData>(sendContact, {});
   if (state.ok) {
     return (
-      <div className="card">
-        <p className="font-medium">Správa odoslaná.</p>
+      <div className="card border-brand-200 bg-brand-50">
+        <p className="font-bold text-brand">Správa odoslaná.</p>
         <p className="text-sm text-muted">
           {firstName} ti odpovie priamo na tvoj e-mail.
         </p>

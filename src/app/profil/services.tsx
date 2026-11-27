@@ -49,15 +49,16 @@ export async function ProfileServices({ userId, highlight }: { userId: string; h
   return (
     <>
       <section id="sluzby" className="space-y-3">
-        <h2 className="text-lg font-semibold">Moje služby</h2>
+        <h2 className="section-title">Moje služby</h2>
 
         {pending.map((s) => (
           <div
             key={s.id}
-            className={`card space-y-3 ${highlight ? "border-brand/60 ring-2 ring-brand/10" : ""}`}
+            className={`card space-y-3 border-l-4 border-l-brand ${highlight ? "ring-2 ring-brand/15" : ""}`}
           >
             <div>
-              <p className="font-medium">Odporučili ťa ako: {s.name}</p>
+              <p className="badge mb-2">Nové odporúčanie</p>
+              <p className="font-bold">Odporučili ťa ako: {s.name}</p>
               {vouchesFor(s.categoryId).map((v, i) => (
                 <p key={i} className="text-sm text-muted">
                   {v.fromName}
@@ -94,8 +95,13 @@ export async function ProfileServices({ userId, highlight }: { userId: string; h
                 <div>
                   <p className="font-medium">{s.name}</p>
                   {s.description && <p className="text-sm text-muted">{s.description}</p>}
-                  <p className="text-xs text-muted">
-                    Zaručenia: {vouchesFor(s.categoryId).length}
+                  <p className="badge mt-1.5">
+                    {vouchesFor(s.categoryId).length}{" "}
+                    {vouchesFor(s.categoryId).length === 1
+                      ? "zaručenie"
+                      : vouchesFor(s.categoryId).length > 1 && vouchesFor(s.categoryId).length < 5
+                        ? "zaručenia"
+                        : "zaručení"}
                   </p>
                 </div>
                 <form action={removeService}>
@@ -116,7 +122,7 @@ export async function ProfileServices({ userId, highlight }: { userId: string; h
 
       {given.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold">Za koho sa zaručujem</h2>
+          <h2 className="section-title">Za koho sa zaručujem</h2>
           <ul className="card divide-y divide-hair p-0">
             {given.map((g) => (
               <li key={g.id} className="flex items-start justify-between gap-3 px-5 py-3">

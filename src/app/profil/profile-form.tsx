@@ -10,6 +10,7 @@ export function ProfileForm({ initial, next }: { initial: Initial; next?: string
   return (
     <form action={action} className="card space-y-4">
       {next && <input type="hidden" name="next" value={next} />}
+      <h2 className="section-title">Údaje o mne</h2>
       <div>
         <label htmlFor="name" className="label">
           Meno a priezvisko
@@ -53,12 +54,12 @@ export function ProfileForm({ initial, next }: { initial: Initial; next?: string
           defaultValue={initial.phone}
         />
         <label className="mt-2 flex items-center gap-2 text-sm">
-          <input type="checkbox" name="phoneVisible" defaultChecked={initial.phoneVisible} />
+          <input type="checkbox" name="phoneVisible" defaultChecked={initial.phoneVisible} className="size-4 accent-brand" />
           Ukázať telefón ľuďom z mojej siete, keď ponúkam službu
         </label>
       </div>
       {state.error && <p className="text-sm text-red-700">{state.error}</p>}
-      {state.ok && <p className="text-sm text-brand">Uložené.</p>}
+      {state.ok && <p className="notice">Uložené.</p>}
       <button className="btn" disabled={pending}>
         {pending ? "Ukladám…" : "Uložiť"}
       </button>
