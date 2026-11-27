@@ -3,6 +3,9 @@ import { requireUser } from "@/lib/session";
 import { ProfileForm } from "./profile-form";
 import { ProfileServices } from "./services";
 import { DeleteAccount } from "./delete-account";
+import { Avatar } from "@/components/avatar";
+import { PageHead } from "@/components/page-head";
+import { IconUser } from "@/components/icons";
 
 export default async function ProfilePage({
   searchParams,
@@ -13,15 +16,23 @@ export default async function ProfilePage({
   const { next, sluzby } = await searchParams;
   const isNew = !user.name || !user.district;
   return (
-    <div className="mx-auto max-w-lg space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">{isNew ? "Vitaj! Doplň si profil" : "Môj profil"}</h1>
-        <p className="mt-1 text-muted">
-          {isNew
-            ? "Meno a okres uvidia tvoji známi a ich známi."
-            : `Prihlásený ako ${user.email}`}
-        </p>
-      </div>
+    <div className="mx-auto max-w-xl space-y-8">
+      {isNew ? (
+        <PageHead icon={<IconUser size={22} />} eyebrow="Ešte jeden krok" title="Vitaj! Doplň si profil">
+          Meno a okres uvidia tvoji známi a ich známi.
+        </PageHead>
+      ) : (
+        <div className="flex items-center gap-4">
+          <Avatar name={user.name} size={64} />
+          <div className="min-w-0">
+            <p className="eyebrow mb-1">Môj profil</p>
+            <h1 className="truncate text-[26px] leading-tight font-bold tracking-tight">{user.name}</h1>
+            <p className="truncate text-sm text-muted">
+              {user.district} · {user.email}
+            </p>
+          </div>
+        </div>
+      )}
       <ProfileForm
         next={next}
         initial={{
@@ -34,7 +45,7 @@ export default async function ProfilePage({
       />
       {!isNew && <ProfileServices userId={user.id} highlight={Boolean(sluzby)} />}
       {!isNew && (
-        <div className="space-y-4 border-t border-hair pt-6">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-hair pt-6">
           <form action={signOut}>
             <button className="text-sm text-muted hover:underline">Odhlásiť sa</button>
           </form>

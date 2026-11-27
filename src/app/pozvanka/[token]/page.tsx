@@ -6,6 +6,7 @@ import { getDb, schema } from "@/db";
 import { areConnected } from "@/lib/connections";
 import { getCurrentUser } from "@/lib/session";
 import { JoinForm } from "./join-form";
+import { Chain } from "@/components/chain";
 
 export default async function InvitePage({
   params,
@@ -58,10 +59,15 @@ export default async function InvitePage({
   const loginHref = `/prihlasenie?next=${encodeURIComponent(next)}`;
   const inviteLogin = getCloudflareContext().env.INVITE_LOGIN === "1";
   return (
-    <div className="mx-auto max-w-md space-y-6 text-center">
+    <div className="card mx-auto max-w-md space-y-6 p-6 text-center sm:my-6 sm:p-8">
       <div>
-        <p className="text-muted">Pozvánka do Po známosti</p>
-        <h1 className="mt-1 text-2xl font-bold">{from.name} ťa pozýva do svojej siete</h1>
+        <div className="mb-5 flex justify-center">
+          <Chain people={[from.name.split(" ")[0], "Ty"]} size="lg" />
+        </div>
+        <p className="eyebrow">Pozvánka do Po známosti</p>
+        <h1 className="mt-2 text-[26px] leading-tight font-bold tracking-tight text-balance">
+          {from.name} ťa pozýva do svojej siete
+        </h1>
         <p className="mt-3 text-muted">
           Budete prepojení ako známi. Uvidíš, koho {from.name} odporúča, a môže odporučiť aj teba.
         </p>
@@ -84,8 +90,8 @@ export default async function InvitePage({
 
 function Message({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mx-auto max-w-md space-y-2 text-center">
-      <h1 className="text-2xl font-bold">{title}</h1>
+    <div className="card mx-auto max-w-md space-y-2 p-6 text-center sm:my-6 sm:p-8">
+      <h1 className="text-[22px] font-bold">{title}</h1>
       <div className="text-muted">{children}</div>
     </div>
   );

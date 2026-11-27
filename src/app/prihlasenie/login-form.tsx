@@ -20,8 +20,8 @@ export function LoginForm({ next }: { next: string }) {
 
   if (state === "sent") {
     return (
-      <div className="card">
-        <p className="font-medium">Skontroluj si e-mail.</p>
+      <div className="rounded-ui border border-brand-200 bg-brand-50 p-4">
+        <p className="font-bold text-brand">Skontroluj si e-mail.</p>
         <p className="mt-1 text-sm text-muted">
           Na adresu {email} sme poslali odkaz na prihlásenie. Platí 15 minút.
         </p>

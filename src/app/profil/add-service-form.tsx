@@ -10,8 +10,8 @@ export function AddServiceForm({ categories }: { categories: { id: number; name:
     if (state.ok) ref.current?.reset();
   }, [state]);
   return (
-    <details className="card">
-      <summary className="cursor-pointer font-medium">Pridať službu, ktorú ponúkam</summary>
+    <details className="card border-dashed border-brand-300 shadow-none">
+      <summary className="cursor-pointer font-medium text-brand marker:text-brand">Pridať službu, ktorú ponúkam</summary>
       <form ref={ref} action={action} className="mt-4 space-y-3">
         <select name="categoryId" required className="input" defaultValue="" aria-label="Služba">
           <option value="" disabled>
